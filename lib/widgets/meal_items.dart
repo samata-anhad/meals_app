@@ -1,11 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:meals_app/models/meal.dart';
+import 'package:meals_app/widgets/meal_item_trait.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class MealItems extends StatelessWidget {
-  const MealItems({super.key, required this.meal});
+  const MealItems({
+  super.key, 
+  required this.meal, 
+  required this.onSelectMeal
+  });
 
   final Meal meal;
+
+  final void Function(Meal meal) onSelectMeal;
+
+  String get complexityText {
+    return meal.complexity.name[0].toUpperCase() +
+        meal.complexity.name.substring(1);
+  }
+
+  //tO TRANSFORM THE ENUM VALUE WE NEED A GETTER FUNCTION
+  // iN THIS THE FIRST PART IS TO UPPERCASE THE FIRST LETER AND THE SECOND PART IS
+  //AFTER 1ST PART WE WANT TO ADD THE WHOLE OTHER WORD FROM 2ND LETTER WITH IT AND THAT WE
+  //USE USING THE SUBSTRING PROPERTY
+
+  String get affordibilityText {
+    return meal.affordability.name[0].toUpperCase() +
+        meal.affordability.name.substring(1);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +37,9 @@ class MealItems extends StatelessWidget {
       clipBehavior: Clip.hardEdge,
       elevation: 2,
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          onSelectMeal(meal);
+        },
         child: Stack(
           children: [
             FadeInImage(
@@ -26,7 +50,6 @@ class MealItems extends StatelessWidget {
               width: double.infinity,
             ),
             Positioned(
-              top: 0,
               bottom: 0,
               right: 0,
               left: 0,
@@ -48,7 +71,21 @@ class MealItems extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 12),
-                    Row(children: []),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        MealItemTrait(
+                          icons: Icons.schedule,
+                          label: '${meal.duration} min',
+                        ),
+                        const SizedBox(width: 12),
+                        MealItemTrait(icons: Icons.work, label: complexityText),
+                        MealItemTrait(
+                          icons: Icons.money,
+                          label: affordibilityText,
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
