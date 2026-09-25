@@ -6,13 +6,18 @@ import 'package:meals_app/screens/meals.dart';
 import 'package:meals_app/widgets/category_grid_items.dart';
 
 class CategoryScreen extends StatelessWidget {
-  const CategoryScreen({super.key, required this.onToggleFavourite});
+  const CategoryScreen({
+    super.key, 
+    required this.onToggleFavourite,
+    required this.availableMeals
+    });
 
   final void Function(Meal meal) onToggleFavourite;
+   final List<Meal> availableMeals;
 
   //the Filtered Method Use To Select The Perfect Category passing the perfect data to perfect category screen
   void _selectedCategory(BuildContext context, Category category) {
-    final filteredMeals = dummyMeals
+    final filteredMeals = availableMeals
         .where((meal) => meal.categories.contains((category.id)))
         .toList();
 
